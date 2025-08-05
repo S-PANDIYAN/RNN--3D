@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Model Test</title>
+</head>
+<body>
+    <h1>Amazon Model Test</h1>
+    <div>
+        <input type="text" id="test-input" value="I love this movie!" placeholder="Enter text">
+        <button onclick="testAmazonModel()">Test Amazon Model</button>
+        <button onclick="testDemoModel()">Test Demo Model</button>
+    </div>
+    <div id="result"></div>
+
+    <script src="js/amazon-model-loader.js"></script>
+    <script src="js/model-loader.js"></script>
+    <script src="js/rnn-model.js"></script>
+    
+    <script>
+        let rnnModel;
+        
+        async function init() {
+            rnnModel = new RNNModel();
+            console.log('RNN Model initialized');
+        }
+        
+        async function testAmazonModel() {
+            try {
+                console.log('Testing Amazon model...');
+                await rnnModel.loadAmazonModel();
+                
+                const text = document.getElementById('test-input').value;
+                const result = await rnnModel.predictSentiment(text);
+                
+                console.log('Amazon model result:', result);
+                document.getElementById('result').innerHTML = `
+                    <h3>Amazon Model Result:</h3>
+                    <p>Text: ${result.text}</p>
+                    <p>Score: ${result.score}</p>
+                    <p>Sentiment: ${result.sentiment}</p>
+                    <p>Confidence: ${result.confidence}</p>
+                    <p>Model Type: ${result.modelType}</p>
+                `;
+            } catch (error) {
+                console.error('Amazon model test failed:', error);
+                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+        
+        async function testDemoModel() {
+            try {
+                console.log('Testing demo model...');
+                // Reset to demo model
+                rnnModel.useKerasModel = false;
+                
+                const text = document.getElementById('test-input').value;
+                const result = await rnnModel.predictSentiment(text);
+                
+                console.log('Demo model result:', result);
+                document.getElementById('result').innerHTML = `
+                    <h3>Demo Model Result:</h3>
+                    <p>Text: ${result.text}</p>
+                    <p>Score: ${result.score}</p>
+                    <p>Sentiment: ${result.sentiment}</p>
+                    <p>Confidence: ${result.confidence}</p>
+                    <p>Model Type: ${result.modelType}</p>
+                `;
+            } catch (error) {
+                console.error('Demo model test failed:', error);
+                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+        
+        // Initialize when page loads
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

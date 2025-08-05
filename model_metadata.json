@@ -1,0 +1,64 @@
+{
+  "model_info": {
+    "name": "Amazon RNN Sentiment Model",
+    "format": "h5",
+    "input_shape": "(None, 200)",
+    "output_shape": "(None, 1)",
+    "vocab_size": 10000,
+    "sequence_length": 200,
+    "rnn_units": 64,
+    "embedding_dim": 100
+  },
+  "layers": [
+    {
+      "name": "embedding_1",
+      "type": "Embedding",
+      "input_shape": null,
+      "output_shape": null,
+      "input_dim": 10000,
+      "output_dim": 100
+    },
+    {
+      "name": "simple_rnn_1",
+      "type": "SimpleRNN",
+      "input_shape": null,
+      "output_shape": null,
+      "units": 64
+    },
+    {
+      "name": "dropout_2",
+      "type": "Dropout",
+      "input_shape": null,
+      "output_shape": null
+    },
+    {
+      "name": "dense_2",
+      "type": "Dense",
+      "input_shape": null,
+      "output_shape": null,
+      "units": 32
+    },
+    {
+      "name": "dropout_3",
+      "type": "Dropout",
+      "input_shape": null,
+      "output_shape": null
+    },
+    {
+      "name": "dense_3",
+      "type": "Dense",
+      "input_shape": null,
+      "output_shape": null,
+      "units": 1
+    }
+  ],
+  "files": {
+    "h5_model": "./amazon_model.h5",
+    "metadata": "./model_metadata.json"
+  },
+  "frontend_integration": {
+    "load_method": "tf.loadLayersModel",
+    "input_preprocessing": "tokenize_and_pad",
+    "output_postprocessing": "sigmoid_to_sentiment"
+  }
+}

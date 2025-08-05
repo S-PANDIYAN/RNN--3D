@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D RNN Sentiment Analysis - Interactive Learning Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <h1>🧠 3D RNN Sentiment Analysis Visualizer</h1>
+            <p>Learn how Recurrent Neural Networks process language for sentiment classification</p>
+        </header>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="model-section">
+                <label>Model Selection:</label>
+                <div class="model-controls">
+                    <input type="radio" id="demo-model" name="model-type" value="demo" checked>
+                    <label for="demo-model">Demo Model</label>
+                    <input type="radio" id="amazon-model" name="model-type" value="amazon">
+                    <label for="amazon-model">Amazon RNN Model</label>
+                    <input type="radio" id="keras-model" name="model-type" value="keras">
+                    <label for="keras-model">Load Keras Model</label>
+                </div>
+                <div class="keras-upload" id="keras-upload" style="display: none;">
+                    <input type="file" id="model-file" accept=".json,.h5" placeholder="Select model file">
+                    <input type="file" id="tokenizer-file" accept=".json" placeholder="Select tokenizer (optional)">
+                    <button id="load-model-btn">📂 Load Model</button>
+                    <div class="model-status" id="model-status"></div>
+                </div>
+            </div>
+            
+            <div class="input-section">
+                <label for="sentence-input">Enter a sentence:</label>
+                <input type="text" id="sentence-input" placeholder="I love this movie!" value="I love this movie!">
+                <button id="process-btn">🚀 Process Sentence</button>
+                <button id="reset-btn">🔄 Reset</button>
+            </div>
+            
+            <div class="speed-control">
+                <label for="animation-speed">Animation Speed:</label>
+                <input type="range" id="animation-speed" min="0.1" max="2" step="0.1" value="1">
+                <span id="speed-value">1x</span>
+            </div>
+
+            <div class="phase-controls">
+                <button id="tokenize-btn" class="phase-btn" disabled>1. Tokenize</button>
+                <button id="embed-btn" class="phase-btn" disabled>2. Embed</button>
+                <button id="process-rnn-btn" class="phase-btn" disabled>3. Process RNN</button>
+                <button id="predict-btn" class="phase-btn" disabled>4. Predict</button>
+                <button id="backprop-btn" class="phase-btn" disabled>5. Backprop</button>
+            </div>
+        </div>
+
+        <!-- 3D Visualization Area -->
+        <div id="three-container"></div>
+
+        <!-- Information Panel -->
+        <div class="info-panel">
+            <div class="current-step">
+                <h3>Current Step: <span id="step-title">Ready to Start</span></h3>
+                <p id="step-description">Enter a sentence and click 'Process Sentence' to begin the RNN visualization.</p>
+            </div>
+
+            <div class="math-display">
+                <h4>Current Equation:</h4>
+                <div id="equation-display">Ready to process...</div>
+            </div>
+
+            <div class="stats-display">
+                <div class="stat-item">
+                    <label>Tokens:</label>
+                    <span id="token-count">0</span>
+                </div>
+                <div class="stat-item">
+                    <label>Current Time Step:</label>
+                    <span id="current-timestep">0</span>
+                </div>
+                <div class="stat-item">
+                    <label>Hidden State Size:</label>
+                    <span id="hidden-size">64</span>
+                </div>
+            </div>
+
+            <div class="sentiment-results">
+                <h4>Sentiment Prediction:</h4>
+                <div class="sentiment-bar">
+                    <div class="sentiment-item">
+                        <span class="emoji">😊</span>
+                        <span class="label">Positive</span>
+                        <div class="bar positive">
+                            <div class="fill" id="positive-fill"></div>
+                        </div>
+                        <span class="percentage" id="positive-score">0%</span>
+                    </div>
+                    <div class="sentiment-item">
+                        <span class="emoji">😐</span>
+                        <span class="label">Neutral</span>
+                        <div class="bar neutral">
+                            <div class="fill" id="neutral-fill"></div>
+                        </div>
+                        <span class="percentage" id="neutral-score">0%</span>
+                    </div>
+                    <div class="sentiment-item">
+                        <span class="emoji">😠</span>
+                        <span class="label">Negative</span>
+                        <div class="bar negative">
+                            <div class="fill" id="negative-fill"></div>
+                        </div>
+                        <span class="percentage" id="negative-score">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Educational Tooltips -->
+        <div id="tooltip" class="tooltip">
+            <div class="tooltip-content">
+                <h4 id="tooltip-title"></h4>
+                <p id="tooltip-text"></p>
+            </div>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-labels">
+                <span>Tokenize</span>
+                <span>Embed</span>
+                <span>RNN</span>
+                <span>Predict</span>
+                <span>Backprop</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/amazon-model-loader.js"></script>
+    <script src="js/model-loader.js"></script>
+    <script src="js/rnn-model.js"></script>
+    <script src="js/3d-visualization.js"></script>
+    <script src="js/ui-controller.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
