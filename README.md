@@ -196,9 +196,7 @@ We welcome contributions! Here's how you can help:
 3. **Model Integration**: Help support more model types
 4. **Documentation**: Improve explanations and examples
 
-## 📄 License
 
-This project is open source and available under the MIT License.
 
 ## 🙏 Acknowledgments
 
